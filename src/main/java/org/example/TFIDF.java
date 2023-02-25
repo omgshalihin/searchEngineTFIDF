@@ -5,38 +5,29 @@ import java.text.DecimalFormat;
 import java.util.Map;
 
 public class TFIDF {
-    public static double calculateTermFrequency(String TERM, Map<String, Integer> termWeightMap) {
-        if (termWeightMap.get(TERM) == null) {
-            return 0;
-        }
-
-        double termCount = termWeightMap.get(TERM);
-        double wordsCount = termWeightMap.values().stream().mapToDouble(Double::valueOf).sum();
-
-        return (termCount / wordsCount);
-    }
 
     public static double calculateInverseDocumentFrequency(double CORPUS, double sizeOfFilteredDocuments) {
         return Math.log10(CORPUS / sizeOfFilteredDocuments);
     }
 
-    public static double calculateTermFrequencyInverseDocumentFrequency (
-            String TERM,
-            Map<String, Integer> termWeightMap,
-            double CORPUS,
-            double sizeOfFilteredDocuments) {
-
-        double idf = calculateInverseDocumentFrequency(CORPUS, sizeOfFilteredDocuments);
-
-        // fail-fast: if IDF is 0, then TF-IDF will be 0
-        if (idf == 0) {
+    public static double calculateTermFrequency(String TERM, Map.Entry<String, Map<String, Integer>> document) {
+        if (document.getValue().get(TERM) == null) {
             return 0;
         }
+
+        double termCount = document.getValue().get(TERM);
+        double wordsCount = document.getValue().values().stream().mapToDouble(Double::valueOf).sum();
+
+        return termCount/wordsCount;
+    }
+
+    public static double neww (Map.Entry<String, Map<String, Integer>> document, String TERM, double totalDocumentsInCorpus, double numberOfDocumentsWhereTermAppears) {
 
         DecimalFormat decimalFormat = new DecimalFormat("#.###");
         decimalFormat.setRoundingMode(RoundingMode.UP);
 
-        double tf = calculateTermFrequency(TERM, termWeightMap);
+        double idf = calculateInverseDocumentFrequency(totalDocumentsInCorpus, numberOfDocumentsWhereTermAppears);
+        double tf = calculateTermFrequency(TERM, document);
 
         return Double.parseDouble(decimalFormat.format(tf * idf));
     }
