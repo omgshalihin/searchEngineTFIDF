@@ -21,7 +21,7 @@ public class TFIDF {
         return termCount/wordsCount;
     }
 
-    public static double neww (Map.Entry<String, Map<String, Integer>> document, String TERM, double totalDocumentsInCorpus, double numberOfDocumentsWhereTermAppears) {
+    public static double calculateTermFrequencyInverseDocumentFrequency (Map.Entry<String, Map<String, Integer>> document, String TERM, double totalDocumentsInCorpus, double numberOfDocumentsWhereTermAppears) {
 
         DecimalFormat decimalFormat = new DecimalFormat("#.###");
         decimalFormat.setRoundingMode(RoundingMode.UP);
