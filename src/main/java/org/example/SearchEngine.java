@@ -35,8 +35,6 @@ public class SearchEngine {
             }
         }
 
-        System.out.println(finalMap);
-
         return new ArrayList<>(finalMap.values());
 
 
